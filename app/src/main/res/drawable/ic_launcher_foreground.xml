@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Dis gumus halka -->
+    <path
+        android:fillColor="#D9DDE4"
+        android:fillType="evenOdd"
+        android:pathData="M24,54 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0 M28.5,54 a25.5,25.5 0 1,0 51,0 a25.5,25.5 0 1,0 -51,0" />
+
+    <!-- Koyu cam govde -->
+    <path
+        android:fillColor="#141A26"
+        android:pathData="M28.5,54 a25.5,25.5 0 1,0 51,0 a25.5,25.5 0 1,0 -51,0" />
+
+    <!-- Mavi ic halka -->
+    <path
+        android:fillColor="#3B82F6"
+        android:fillType="evenOdd"
+        android:pathData="M35,54 a19,19 0 1,0 38,0 a19,19 0 1,0 -38,0 M38.5,54 a15.5,15.5 0 1,0 31,0 a15.5,15.5 0 1,0 -31,0" />
+
+    <!-- Iris -->
+    <path
+        android:fillColor="#0A0D14"
+        android:pathData="M38.5,54 a15.5,15.5 0 1,0 31,0 a15.5,15.5 0 1,0 -31,0" />
+    <path
+        android:fillColor="#1F2E52"
+        android:pathData="M45,54 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0" />
+    <path
+        android:fillColor="#0A0D14"
+        android:pathData="M49.5,54 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0" />
+
+    <!-- Yansimalar -->
+    <path
+        android:fillColor="#E6FFFFFF"
+        android:pathData="M42.5,46 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0" />
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M58,61.5 a1.8,1.8 0 1,0 3.6,0 a1.8,1.8 0 1,0 -3.6,0" />
+</vector>
