@@ -1,0 +1,221 @@
+====================================================================
+ KAMERA UYGULAMASI - KURULUM VE KULLANIM KILAVUZU
+ Xiaomi 13T Pro icin, fiziksel lens kontrollu ozel kamera uygulamasi
+ (SURUM 2 - onizleme dondurme ve lens tespiti duzeltmeleri ile)
+====================================================================
+
+SURUM 2'DE NE DEGISTI:
+  - Onizleme goruntusunun yan durmasi (90 derece yanlis donmesi)
+    duzeltildi.
+  - Ultra Genis Aci (0.6x) lensinin "kullanilamaz" gorunmesine
+    sebep olan asiri siki bir filtre kaldirildi.
+  - (i) bilgi ekranina, hangi lensin hangi yontemle (fiziksel /
+    zoom) acildigini gosteren "Son calisma-zamani olaylari" bolumu
+    eklendi - Telefoto (2x) neden dijital zoom'a dustuyse artik
+    buradan gorulebilir.
+
+ONEMLI: Eger yeni surumu kurduktan sonra hala bir sorun yasarsan
+(orn. onizleme hala yan duruyor ya da 2x hala dijital zoom
+yapiyor), (i) bilgi ekranindaki TAM RAPORU "Kopyala" ile alip bana
+gonder - bu rapor olmadan hangi fiziksel kameranin ne yaptigini
+goremiyorum, kor kor tahmin etmek yerine rapora gore kesin duzeltme
+yapabilirim.
+
+Bu klasorde "Kamera" adinda tam bir Android Studio / Gradle projesinin
+kaynak kodu var. Uygulama telefonundaki 3 fiziksel arka kameraya
+(0.6x ultra genis, 1x ana, 2x telefoto) doğrudan Camera2 API ile
+erisiyor, boylece Xiaomi'nin stok kamera uygulamasindaki "yanlis
+lens aciliyor" sorununu asiyor. Ayrica Leica Authentic / Leica
+Vibrant renk modlari, foto+video kaydi ve galeriye otomatik kayit
+var.
+
+Telefonunda kurulu bir Android Studio / derleme ortami OLMADIGI icin
+APK'yi elde etmenin en kolay yolu asagidaki 1. YONTEM'dir (GitHub
+Actions ile bulutta derleme). Eger bilgisayarinda Android Studio
+kuruluysa 2. YONTEM'i de kullanabilirsin.
+
+
+--------------------------------------------------------------------
+BOLUM 0: DAHA ONCE KURDUYSAN - GUNCELLEME NASIL YUKLENIR
+--------------------------------------------------------------------
+Eger GitHub'a projeyi zaten bir kez yuklediysen, YENIDEN REPO
+OLUSTURMANA GEREK YOK. Sadece degisen dosyalari ustune yukleyip
+tekrar derletmen yeterli:
+
+1. Bu klasordeki (guncellenmis) su 2 dosyayi bul:
+     app/src/main/java/com/kamera/app/GlPipeline.kt
+     app/src/main/java/com/kamera/app/CameraController.kt
+     app/src/main/java/com/kamera/app/MainActivity.kt
+2. GitHub'da kendi reponu ac (github.com/KULLANICI_ADIN/kamera).
+3. Repo icinde su klasore git:
+     app > src > main > java > com > kamera > app
+4. Guncellenecek her dosyanin uzerine tikla (orn. GlPipeline.kt),
+   sag ustteki KALEM (Edit) ikonuna bas, icindeki TUM metni sil,
+   bilgisayarindaki yeni dosyanin tum icerigini yapistir,
+   sag ustten "Commit changes" de. Ayni islemi CameraController.kt
+   ve MainActivity.kt icin de tekrarla.
+   (Ya da daha kolayi: repo ana sayfasinda "Add file > Upload
+   files" ile bu 3 dosyayi surukleyip birak - GitHub ayni isimli
+   dosyalarin ustune yazacagini soracak, "Commit changes" de.)
+5. "Actions" sekmesine git, "APK derle" otomatik calismaya
+   basladi mi kontrol et (baslamadiysa "Run workflow" ile elle
+   baslat).
+6. Bittiginde BOLUM 1 - Adim 5'teki gibi "Kamera-APK" artifact'ini
+   indir, telefonuna aktar, kur (eski surumun ustune kurulabilir,
+   silmene gerek yok).
+
+
+--------------------------------------------------------------------
+BOLUM 1: APK DOSYASINI ELDE ETME (ILK KEZ KURUYORSAN)
+--------------------------------------------------------------------
+
+YONTEM 1 - GitHub Actions ile (Android Studio GEREKMEZ, ONERILEN)
+--------------------------------------------------------------------
+Bu klasorde ".github/workflows/build-apk.yml" adinda bir dosya var.
+Bu dosya, projeyi GitHub'a yukledigin an GitHub'in kendi
+sunucularinda otomatik olarak APK'yi derler.
+
+Adimlar:
+1. github.com adresinde ucretsiz bir hesap ac (yoksa).
+2. Sag ustten "New repository" ile "kamera" adinda YENİ ve BOS bir
+   repo olustur (Public veya Private, farketmez). "Add README" gibi
+   kutucuklari İSARETLEME, bos birak.
+3. Bu klasordeki TUM dosyalari (gizli ".github" ve ".gitignore"
+   dahil) o repoya yukle. En kolayi: GitHub repo sayfasinda
+   "uploading an existing file" linkine tikla, bu klasorun icindeki
+   her seyi (alt klasorler dahil) surukleyip birak, "Commit changes"
+   de. (Tarayicidan yukleme .github klasorunu bazen atlayabilir;
+   atlarsa asagidaki "git ile yukleme" kismini kullan.)
+
+   Git ile yukleme (bilgisayarinda git kuruluysa, terminalden):
+       cd kamera-proje-klasoru
+       git init
+       git add -A
+       git commit -m "ilk surum"
+       git branch -M main
+       git remote add origin https://github.com/KULLANICI_ADIN/kamera.git
+       git push -u origin main
+
+4. GitHub'da repona git, ust menudeki "Actions" sekmesine tikla.
+   "APK derle" adinda bir is (workflow) gorunecek. Otomatik
+   baslamadiysa sol menuden secip "Run workflow" butonuna bas.
+5. Islem bitince (birkac dakika surer, yesil tik cikar) o calismaya
+   tikla, en altta "Artifacts" bolumunde "Kamera-APK" adinda bir
+   dosya gorunur. Ona tiklayip indir - bu bir .zip dosyasidir,
+   icinde app-release.apk var. Zip'i ac, APK dosyasini telefonuna
+   aktarmak icin BOLUM 2'ye gec.
+
+
+YONTEM 2 - Android Studio ile bilgisayarindan derleme
+--------------------------------------------------------------------
+1. Android Studio'yu ac, "Open" ile bu klasoru (Kamera) sec.
+2. Gradle senkronizasyonunun bitmesini bekle (internet gerekir,
+   ilk seferde bagimliliklari indirir).
+3. Ust menu: Build > Build Bundle(s) / APK(s) > Build APK(s).
+4. Derleme bitince sag altta cikan "locate" linkine tikla; APK
+   genelde su yolda olur:
+       app/build/outputs/apk/release/app-release.apk
+5. Bu dosyayi telefonuna aktarmak icin BOLUM 2'ye gec.
+
+
+--------------------------------------------------------------------
+BOLUM 2: APK'YI XIAOMI 13T PRO'YA KURMA
+--------------------------------------------------------------------
+
+ADIM A - APK dosyasini telefona aktar (herhangi birini sec):
+  - Google Drive / Dosyalarim: APK'yi Drive'a yukle, telefonda
+    Drive uygulamasindan indir.
+  - USB kablo: Telefonu bilgisayara bagla, "Dosya aktarimi" modunu
+    sec, APK'yi telefonda Indirilenler (Download) klasorune kopyala.
+  - Kendine WhatsApp/Telegram/e-posta ile gonder ve telefonda ac.
+
+ADIM B - "Bilinmeyen kaynaklardan yukleme" iznini ac:
+  MIUI/HyperOS bir APK'yi Play Store disindan kurarken once izin
+  ister. APK dosyasina dokundugunda telefon otomatik olarak
+  "Bu kaynaktan yuklemeye izin ver" seçenegini gosterecek; "Ayarlar"a
+  gotururse:
+      Ayarlar > Uygulamalar > Ozel izinler >
+      "Bilinmeyen uygulamalari yukle" > kullandigin dosya yoneticisi/
+      tarayici/Drive uygulamasini sec > "Bu kaynaga izin ver" ac.
+  Sonra APK dosyasina tekrar dokun.
+
+ADIM C - Kurulum:
+  1. Dosya Yoneticisi'nde (veya indirdigin uygulamada) APK dosyasina
+     dokun.
+  2. "Yukle" (Install) de.
+  3. MIUI bazen "Guvenlik taramasi" veya "Zarar verebilir" gibi bir
+     uyari gosterebilir (cunku uygulama Play Store'dan degil, kendi
+     derledigin bir uygulama - bu normaldir). "Yine de yukle" /
+     "Detaylar" > "Yine de yukle" secenegine dokun.
+  4. Kurulum bitince "Ac" (Open) de.
+
+ADIM D - Ilk acilista izinler:
+  Uygulama ilk acildiginda Kamera ve Mikrofon izinleri isteyecek.
+  Ikisine de "Izin ver" de (Mikrofon verilmezse uygulama calisir
+  ama videolar sessiz kaydedilir).
+
+
+--------------------------------------------------------------------
+BOLUM 3: UYGULAMAYI KULLANMA
+--------------------------------------------------------------------
+
+Ust cubuk:
+  - Sol ustte YILDIRIM ikonu: Flas Acik/Kapali (video modunda fener
+    gibi calisir, foto modunda cekim aninda parlar).
+  - Ortada 3 sekme: Standart / Leica Authentic / Leica Vibrant.
+    Hangisi secili ise canli goruntude, cekilen fotoda ve videoda
+    O renk profili uygulanir.
+  - Sag ustte (i) ikonu: Cihazinin kameralarinin tam TARAMA
+    RAPORUNU gosterir (hangi ID'nin hangi lense karsilik geldigi,
+    odak uzakligi, MP, OIS var mi vb). Sorun yasarsan buraya bak,
+    "Kopyala" ile raporu panoya alip bana gonderebilirsin.
+
+Alt-orta lens dugmeleri (0.6x / 1x / 2x):
+  - Tek dokunus: o lense gecer, ekranda hangi fiziksel sensore
+    gecildigini bildiren bir bildirim (Toast) cikar.
+  - UZUN BASMA: Eger bir lens yanlis acildiysa (or. 1x yerine baska
+    bir sensor gorunuyorsa), o dugmeye uzun basarak ayni lens icin
+    BIR SONRAKI acma yontemini dener (once "fiziksel ID" yontemi,
+    olmazsa "dogrudan ID", o da olmazsa "zoom" yontemi dener).
+  - Yaninda "50MP" etiketi: Acik oldugunda foto modunda mumkunse tam
+    50 MP (Pixel Binning kapali) cozunurlukte cekim yapar; kapali
+    oldugunda dosya boyutu icin daha kucuk (ama hala yuksek kalite)
+    standart cozunurluk kullanilir.
+
+Foto / Video gecisi:
+  - Alt ortadaki "FOTOGRAF" / "VIDEO" yazilarina dokun, ya da
+    onizleme ekranini SAGA/SOLA KAYDIR.
+
+Deklansor / Kayit dugmesi (buyuk beyaz/kirmizi daire):
+  - Foto modunda: beyaz daireye dokununca fotograf cekilir ve
+    otomatik olarak Galeri (DCIM/Camera) klasorune kaydedilir.
+  - Video modunda: kirmizi daireye dokun -> kayit baslar, ekranda
+    yanip sonen kirmizi nokta ve sure sayaci gorunur; tekrar dokun
+    -> kayit durur ve video galeriye kaydedilir.
+
+Sol alttaki kucuk kare: Son cekilen foto/videonun kucuk onizlemesi
+  (thumbnail). Dokunursan telefonun Galeri uygulamasinda acilir.
+
+
+--------------------------------------------------------------------
+BOLUM 4: SORUN GIDERME
+--------------------------------------------------------------------
+
+- "X lensi bu cihazda bulunamadi" uyarisi: (i) butonundaki raporu
+  kontrol et; cihazin o odak araligina karsilik gelen fiziksel bir
+  sensoru olmayabilir ya da MIUI o sensoru uygulamalara kapatmis
+  olabilir. Raporu bana gonderirsen eslemeyi (mapping) birlikte
+  ayarlayabiliriz.
+- Kurulum sirasinda "Uygulama yuklenemedi" hatasi: Telefonda ayni
+  applicationId (com.kamera.app) ile ONCEDEN kurulu farkli imzali
+  bir surum varsa once onu kaldirip tekrar dene.
+- Video sessiz kaydediliyor: Ayarlar > Uygulamalar > Kamera >
+  Izinler > Mikrofon iznini kontrol et.
+- GitHub Actions calismasi kirmizi (basarisiz) cikarsa: "Actions"
+  sekmesinde o calismaya tikla, kirmizi adimin log'unu bana
+  gonderirsen hatayi duzeltebilirim.
+
+Not: Uygulama, kendi telefonuna dogrudan kurabilmen icin "release"
+surumde de gecici (debug) imza anahtari ile imzalanmistir. Bu, Play
+Store'a yuklemek icin uygun degildir ama kendi cihazina kurup
+kullanman icin tamamen yeterli ve normaldir.
